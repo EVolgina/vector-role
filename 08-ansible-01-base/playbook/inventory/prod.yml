@@ -1,6 +1,0 @@
-[el]
-158.160.50.62 ansible_ssh_private_key_file=/home/devops/.ssh/id_rsa
-[deb]
-84.201.172.212 ansible_ssh_private_key_file=/home/devops/.ssh/id_rsa
-[local]
-127.0.0.1 ansible_connection=local
