@@ -1,0 +1,45 @@
+- name: Ensure Ansible uses Python 3
+  set_fact:
+    ansible_python_interpreter: /usr/bin/python3
+
+- name: Install unzip
+  become: yes
+  ansible.builtin.apt:
+    name: unzip
+    state: present
+    update_cache: yes
+
+- name: Create a directory for Lighthouse distrib
+  ansible.builtin.file:
+    path: "/var/www/html/lighthouse/"
+    state: directory
+    owner: devops
+    group: devops
+    mode: "0755"
+  become: yes
+
+- name: Get Lighthouse distrib
+  ansible.builtin.get_url:
+    url: "https://github.com/VKCOM/lighthouse/archive/refs/heads/master.zip"
+    dest: "/home/devops/lighthouse.zip"
+    mode: "0644"
+
+- name: Unarchive Lighthouse distrib into nginx
+  ansible.builtin.unarchive:
+    src: "/home/devops/lighthouse.zip"
+    dest: "/var/www/html/lighthouse/"
+    owner: devops
+    mode: "0755"
+    remote_src: true
+
+- name: Make nginx config
+  ansible.builtin.template:
+    src: "/home/devops/ansible/mnt-homeworks/08-ansible-04-role/playbook/templates/nginx.j2"
+    dest: "/etc/nginx/sites-enabled/lighthouse.conf"
+    mode: "0644"
+
+- name: Remove Lighthouse distrib
+  ansible.builtin.file:
+    path: "/home/devops/lighthouse.zip"
+    state: absent
+

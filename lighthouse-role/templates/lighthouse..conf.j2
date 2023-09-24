@@ -1,0 +1,12 @@
+---
+# lighthouse.conf.j2
+server {
+    listen 8123;
+    listen [::]:8123;
+    server_name localhost;
+
+    location / {
+        root    {{ lighthouse_dir }};
+        index  index.html;
+    }
+}
