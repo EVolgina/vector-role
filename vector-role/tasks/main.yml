@@ -10,3 +10,11 @@
     name: "vector"
     state: present
   notify: Start Vector service
+
+- name: Create Vector configuration file
+  template:
+    src: vector_config.j2
+    dest: /home/devops/vector
+  become: yes
+  become_user: devops
+  notify: Restart Vector service
